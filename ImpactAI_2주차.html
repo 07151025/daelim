@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>무인점포 도난방지 AI 시스템</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* 1. THE SETUP */
+        * { box-sizing: border-box; }
+        p { margin: 0; margin-bottom: 15px; }
+        body {
+            background-color: #f1f5f9;
+            display: grid;
+            gap: 20px;
+            grid-template-columns: 1fr;
+            margin: 0;
+            min-height: 100vh;
+            padding: 20px 0;
+            place-items: center;
+        }
+        .slide-container {
+            align-items: center;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+            display: flex;
+            flex-direction: column;
+            font-family: 'Noto Sans KR', sans-serif;
+            height: 720px;
+            justify-content: center;
+            overflow: hidden;
+            padding: 60px;
+            position: relative;
+            width: 1280px;
+        }
+        .slide-container > * { position: relative; z-index: 1; }
+        
+        /* 2. TYPOGRAPHY */
+        .slide-container h1, .slide-container h2, .slide-container h3 {
+            color: #0f172a; font-weight: 700; font-family: 'Poppins', 'Noto Sans KR', sans-serif; margin: 0;
+        }
+        .slide-container p, .slide-container li, .slide-container th, .slide-container td {
+            color: #475569; font-family: 'Noto Sans KR', sans-serif;
+        }
+        .slide-container h1 { font-size: 64px; line-height: 1.3; letter-spacing: -1.5px; }
+        .slide-container h1 span { color: #2563eb; }
+        
+        .slide-container .slide-title {
+            font-size: 42px; font-weight: 700; margin-bottom: 40px; text-align: left; width: 100%;
+            border-bottom: 2px solid #e2e8f0; padding-bottom: 15px; letter-spacing: -1px;
+        }
+        .slide-container .slide-title span { color: #2563eb; }
+        .slide-container h3 { font-size: 24px; margin-bottom: 15px; letter-spacing: -0.5px; }
+        .slide-container p, .slide-container li, .slide-container th, .slide-container td {
+            font-size: 19px; line-height: 1.6;
+        }
+        .slide-container .subtitle {
+            font-weight: 500; margin: 0 auto 20px auto; color: #2563eb; font-size: 24px;
+        }
+        
+        .slide-container .content-area {
+            align-items: center; display: flex; flex-direction: column; flex-grow: 1; justify-content: center; width: 100%;
+        }
+        
+        /* 3. LAYOUTS */
+        .title-layout { text-align: center; }
+        
+        /* TOC List */
+        .toc-list { list-style: none; margin: 0; padding-left: 0; width: 100%; max-width: 800px; }
+        .toc-list li {
+            margin-bottom: 30px; font-size: 32px; font-weight: 700; color: #0f172a; display: flex; align-items: center;
+            border-bottom: 1px solid #f1f5f9; padding-bottom: 15px;
+        }
+        .toc-list li span {
+            color: #2563eb; font-size: 36px; margin-right: 25px; font-family: 'Poppins', sans-serif; font-weight: 700;
+        }
+
+        /* Tiled Content (Horizontal) */
+        .tiled-content { align-items: stretch; display: flex; gap: 30px; justify-content: center; width: 100%; }
+        .tile { background-color: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0; display: flex; flex-direction: column; flex: 1; padding: 40px 30px; text-align: center; }
+        .tile .icon { color: #2563eb; font-size: 42px; margin-bottom: 25px; background: #eff6ff; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; border-radius: 16px; margin-left: auto; margin-right: auto; }
+        
+        /* Tiled Content (Vertical) */
+        .tiled-content.vertical { flex-direction: column; gap: 40px; max-width: 1050px; width: 100%; }
+        .tiled-content.vertical .tile { 
+            flex-direction: row; 
+            align-items: center; 
+            padding: 50px 60px; 
+            gap: 40px; 
+            text-align: left;
+        }
+        .tiled-content.vertical .tile .icon { margin-bottom: 0; margin-left: 0; margin-right: 0; flex-shrink: 0; }
+        .tiled-content.vertical .tile .text-group { flex-grow: 1; }
+        .tiled-content.vertical .tile h3 { 
+            margin-bottom: 10px; 
+            font-size: 26px; 
+            word-break: keep-all; 
+        }
+        .tiled-content.vertical .tile p { 
+            margin-bottom: 0; 
+            font-size: 20px; 
+            line-height: 1.6; 
+            word-break: keep-all; 
+        }
+
+        /* Table Layout (No extra text) */
+        .table-layout { width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; }
+        .table-layout table { border-collapse: collapse; width: 100%; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
+        .table-layout th, .table-layout td { border-bottom: 1px solid #e2e8f0; padding: 35px 40px; text-align: left; background-color: #ffffff; font-size: 22px; line-height: 1.5; }
+        .table-layout th { background-color: #f8fafc; color: #0f172a; font-size: 24px; font-weight: 700; width: 25%; text-align: center; border-right: 1px solid #e2e8f0; }
+        .table-layout tr:last-child td, .table-layout tr:last-child th { border-bottom: none; }
+        .table-layout td strong { color: #2563eb; font-weight: 700; }
+
+        /* Timeline / Process Flow Layout */
+        .process-flow { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 40px; position: relative; }
+        .process-flow::before { content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 4px; background: #cbd5e1; z-index: 0; transform: translateY(-50%); }
+        .process-step { position: relative; z-index: 1; background: #fff; border: 4px solid #2563eb; border-radius: 12px; padding: 30px 20px; width: 22%; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .process-step h3 { color: #2563eb; font-size: 22px; margin-bottom: 15px; }
+        .process-step p { font-size: 18px; margin: 0; word-break: keep-all; }
+
+        /* Ending Layout */
+        .ending-layout { margin: auto; text-align: center; width: 100%; display: flex; align-items: center; justify-content: center; height: 100%; }
+        .ending-layout h2 { font-size: 100px; color: #0f172a; letter-spacing: -2px; margin: 0; }
+    </style>
+</head>
+<body>
+
+<!-- Slide 1: Title -->
+<div class="slide-container" id="slide1">
+    <div class="title-layout">
+        <p class="subtitle">졸업 작품 프로젝트 기획안</p>
+        <h1>무인점포 <span>도난방지 AI 시스템</span></h1>
+        <p style="font-size: 24px; margin-top: 30px; color: #475569;">시스템 구축 1안 및 2안 비교 보고서</p>
+    </div>
+</div>
+
+<!-- Slide 2: TOC -->
+<div class="slide-container" id="slide2">
+    <h2 class="slide-title"><span>목차</span></h2>
+    <div class="content-area">
+        <ul class="toc-list">
+            <li><span>01.</span> 대략적인 구조 흐름</li>
+            <li><span>02.</span> 시스템 설계 공통점</li>
+            <li><span>03.</span> [1안] 시스템 구축 상세</li>
+            <li><span>04.</span> [2안] 시스템 구축 상세</li>
+        </ul>
+    </div>
+</div>
+
+<!-- Slide 3: Rough Structural Flow -->
+<div class="slide-container" id="slide3">
+    <h2 class="slide-title">대략적인 <span>구조 흐름</span></h2>
+    <div class="content-area">
+        <div class="process-flow">
+            <div class="process-step">
+                <i class="fa-solid fa-video" style="font-size: 40px; color: #2563eb; margin-bottom: 15px;"></i>
+                <h3>1. 영상 수집</h3>
+                <p>매대 주변 설치된 카메라를 통한 실시간 모니터링</p>
+            </div>
+            <div class="process-step">
+                <i class="fa-solid fa-microchip" style="font-size: 40px; color: #2563eb; margin-bottom: 15px;"></i>
+                <h3>2. 엣지 AI 분석</h3>
+                <p>라즈베리파이 내부 객체 및 포즈 추출 딥러닝 연산</p>
+            </div>
+            <div class="process-step">
+                <i class="fa-solid fa-brain" style="font-size: 40px; color: #2563eb; margin-bottom: 15px;"></i>
+                <h3>3. 은닉 판별</h3>
+                <p>상태 머신 알고리즘 기반 순차적 이상 행위 확정</p>
+            </div>
+            <div class="process-step">
+                <i class="fa-solid fa-bell" style="font-size: 40px; color: #2563eb; margin-bottom: 15px;"></i>
+                <h3>4. 컷편집 전송</h3>
+                <p>경보음 없이 의심 구간 영상을 점주에게 무음 알림</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 4: Commonalities between Plan 1 & 2 -->
+<div class="slide-container" id="slide4">
+    <h2 class="slide-title">1안과 2안의 <span>공통점</span></h2>
+    <div class="content-area">
+        <div class="tiled-content vertical">
+            <div class="tile">
+                <div class="icon"><i class="fa-solid fa-server"></i></div>
+                <div class="text-group">
+                    <h3>독립형 엣지 하드웨어</h3>
+                    <p>별도의 클라우드 서버나 고사양 PC 없이 <b>라즈베리파이 5와 USB 웹캠 2대</b>만으로 구성되는 플러그 앤 플레이 방식입니다.</p>
+                </div>
+            </div>
+            <div class="tile">
+                <div class="icon"><i class="fa-solid fa-bolt"></i></div>
+                <div class="text-group">
+                    <h3>100% 로컬 추론 연산</h3>
+                    <p>외부 API 통신 지연 없이 기기 내부에서 객체 탐지와 행동 분석 알고리즘이 <b>동시 및 교대(Multiprocessing)로 실행</b>됩니다.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 5: Plan 1 (Table Only) -->
+<div class="slide-container" id="slide5">
+    <h2 class="slide-title"><span>[1안]</span> 시스템 구축 상세</h2>
+    <div class="content-area">
+        <div class="table-layout">
+            <table>
+                <tbody>
+                    <tr>
+                        <th>카메라 배치</th>
+                        <td>웹캠 A (측면 45° 상단 고정) + 웹캠 B (정면 1.5m 하향 고정)</td>
+                    </tr>
+                    <tr>
+                        <th>적용 모델</th>
+                        <td><strong style="color: #2563eb;">YOLOv8n</strong> (상품 탐지) + <strong style="color: #2563eb;">MoveNet Lightning</strong> (포즈 추출)</td>
+                    </tr>
+                    <tr>
+                        <th>판별 로직</th>
+                        <td>1. 상품 가림(Occlusion) ➔ 2. 소멸 위치 확인 ➔ 3. 손목 복귀 추적</td>
+                    </tr>
+                    <tr>
+                        <th>특장점</th>
+                        <td>정면 포즈 추출을 통한 관절 키포인트 인식 정확도 극대화</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 6: Plan 2 (Table Only) -->
+<div class="slide-container" id="slide6">
+    <h2 class="slide-title"><span>[2안]</span> 시스템 구축 상세</h2>
+    <div class="content-area">
+        <div class="table-layout">
+            <table>
+                <tbody>
+                    <tr>
+                        <th>카메라 배치</th>
+                        <td><strong>탑다운 뷰 중심 배치</strong>. 사람과 상품의 바운딩 박스 위치 및 궤적 추적 전담</td>
+                    </tr>
+                    <tr>
+                        <th>적용 모델</th>
+                        <td><strong>YOLO 단독 모델 운용</strong>. 객체 실시간 탐지 및 중심점 기반 이동 벡터 연산</td>
+                    </tr>
+                    <tr>
+                        <th>판별 로직</th>
+                        <td><strong>다중 조건 AND 결합</strong>. 연속 소실, 최소 거리, 이동 방향, 결제 내역 종합 검증</td>
+                    </tr>
+                    <tr>
+                        <th>특장점</th>
+                        <td><strong>F1 Score 기반 임계값 최적화</strong>. 철저한 테스트 시나리오 수행을 통한 오탐률 극소화</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 7: Ending (Only text) -->
+<div class="slide-container" id="slide7">
+    <div class="ending-layout">
+        <h2>감사합니다</h2>
+    </div>
+</div>
+
+</body>
+</html>
+```

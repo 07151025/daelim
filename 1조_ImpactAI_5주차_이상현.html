@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ImpactAI 5주차 발표자료 (통합본)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --bg: #f8fafc;
+            --text: #1e293b;
+            --accent: #ef4444;
+            --success: #10b981;
+        }
+        * { box-sizing: border-box; }
+        body { margin: 0; background: #cbd5e1; display: flex; flex-direction: column; align-items: center; gap: 40px; padding: 40px 0; font-family: 'Noto Sans KR', sans-serif; }
+        .slide { width: 1280px; height: 720px; background: white; border-radius: 12px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); position: relative; padding: 50px 60px; overflow: hidden; display: flex; flex-direction: column; }
+        
+        /* Slide Header & Title */
+        .title-content { text-align: center; margin: auto; }
+        .title-content h1 { font-size: 64px; color: var(--text); margin-bottom: 20px; font-family: 'Poppins', 'Noto Sans KR'; }
+        .title-content h1 span { color: var(--primary); }
+        .title-content .names { font-size: 24px; color: #64748b; margin-top: 40px; }
+
+        .slide-header { border-bottom: 3px solid var(--primary); padding-bottom: 15px; margin-bottom: 25px; }
+        .slide-header h2 { font-size: 42px; margin: 0; display: flex; align-items: center; gap: 15px; }
+        
+        /* Grid Layouts */
+        .feedback-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 20px; 
+            flex-grow: 1; 
+            align-content: start;
+        }
+        
+        .fb-group { display: flex; flex-direction: column; gap: 10px; }
+
+        /* Card Styles */
+        .fb-card { 
+            background: #f1f5f9; 
+            padding: 15px 20px; 
+            border-radius: 10px; 
+            border-left: 5px solid var(--accent); 
+        }
+        .fb-card h3 { font-size: 18px; margin: 0 0 5px 0; color: var(--accent); }
+        .fb-card p { font-size: 15px; line-height: 1.4; color: #334155; margin: 0; }
+        
+        .sol-card { 
+            background: #eff6ff; 
+            padding: 15px 20px; 
+            border-radius: 10px; 
+            border-left: 5px solid var(--primary);
+            height: 100%;
+        }
+        .sol-card h3 { font-size: 18px; margin: 0 0 8px 0; color: var(--primary); }
+        .sol-card ul { font-size: 14px; padding-left: 18px; margin: 0; line-height: 1.5; }
+        .sol-card .text-content { font-size: 18px; line-height: 1.8; color: #374151; }
+        
+        .badge { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; margin-bottom: 5px; }
+        .badge-fb { background: #fee2e2; color: #ef4444; }
+        .badge-sol { background: #dbeafe; color: #2563eb; }
+        .badge-step { background: #d1fae5; color: #059669; }
+
+        /* Utility */
+        .highlight-blue { color: var(--primary); font-weight: 700; text-decoration: underline; }
+        .highlight-green { color: #059669; font-weight: 700; text-decoration: underline; }
+        .bg-green { background: #ecfdf5; border-left-color: #10b981; }
+        .bg-gray { background: #f9fafb; border-left-color: #6b7280; }
+        .bg-orange { background: #fff7ed; border-left-color: #f97316; }
+        .footer-page { position: absolute; bottom: 30px; right: 60px; color: #94a3b8; font-weight: bold; }
+
+    </style>
+</head>
+<body>
+
+    <!-- Slide 1: Title -->
+    <div class="slide">
+        <div class="title-content">
+            <p style="font-weight: bold; color: var(--primary); letter-spacing: 2px;">ImpactAI | 캡스톤 디자인 5주차 발표</p>
+            <h1>무인점포 <span>도난방지 AI 시스템</span></h1>
+	    
+            <div class="names">
+                <strong>발표자:</strong> 이상현 | <strong>팀원:</strong> 엄예림 | 박재희 | 박태상
+            </div>
+
+        </div>
+        <div class="footer-page">Slide 1 / 4</div>
+    </div>
+
+    <!-- Slide 2: Feedback & Solution -->
+    <div class="slide">
+        <div class="slide-header">
+            <h2><i class="fa-solid fa-comments"></i> 피드백 반영 및 솔루션</h2>
+        </div>
+        <div class="feedback-grid">
+            <div class="fb-group">
+                <div class="fb-card">
+                    <span class="badge badge-fb">Feedback</span>
+                    <h3>구현 로직 및 데이터 구체화</h3>
+                    <p>작동 원리 보완 및 데이터셋 샘플 개수 명시</p>
+                </div>
+                <div class="sol-card">
+                    <span class="badge badge-sol">Solution</span>
+                    <h3>데이터 기반 트리거 시스템</h3>
+                    <ul>
+                        <li><strong>데이터:</strong> PoseLift, UCF-Crime 등 원본 1,000개 → 증강 후 <strong>4,000개</strong></li>
+                        <li><strong>원리:</strong> Camera A(트리거) ➔ MoveNet(좌표) ➔ <strong>GRU(시계열 분류)</strong></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="fb-group">
+                <div class="fb-card">
+                    <span class="badge badge-fb">Feedback</span>
+                    <h3>'상황 인식'에 대한 정의</h3>
+                    <p>단순 객체 탐지를 넘어선 시나리오 분석 설명</p>
+                </div>
+                <div class="sol-card">
+                    <span class="badge badge-sol">Solution</span>
+                    <h3>Sequence 기반 상황 분석</h3>
+                    <ul>
+                        <li>단순 좌표가 아닌 <strong>[집기-은닉-복귀]</strong> 시퀀스 분석</li>
+                        <li>GRU 모델을 통해 프레임 간의 맥락(Context) 유지</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="fb-group">
+                <div class="fb-card">
+                    <span class="badge badge-fb">Feedback</span>
+                    <h3>이진 분류로의 방향성</h3>
+                    <p>다중 행동 분류보다 '도난 여부' 판별에 집중</p>
+                </div>
+                <div class="sol-card">
+                    <span class="badge badge-sol">Solution</span>
+                    <h3>Binary Classification 확정</h3>
+                    <ul>
+                        <li><strong>Theft(1) vs Normal(0)</strong> 이진 분류 체계 구축</li>
+                        <li>Softmax 임계값(0.85) 설정으로 오탐률 최소화</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="fb-group">
+                <div class="fb-card">
+                    <span class="badge badge-fb">Feedback</span>
+                    <h3>현실적 구현 가능성 고려</h3>
+                    <p>교수님 피드백 반영: 2안의 구현 난이도 확인</p>
+                </div>
+                <div class="sol-card">
+                    <span class="badge badge-sol">Solution</span>
+                    <h3>2안 YOLO 성능 테스트</h3>
+                    <ul>
+                        <li>2안 테스트를 위한 추가 데이터셋 확보 및 정제</li>
+                        <li><strong>YOLO 단독 모델</strong>을 통한 궤적 추적 역량 집중</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-page">Slide 2 / 4</div>
+    </div>
+
+    <!-- Slide 3: [1안] 프로젝트 진행 단계 -->
+    <div class="slide">
+        <div class="slide-header">
+            <h2><i class="fa-solid fa-list-check"></i> [1안] 프로젝트 진행 단계</h2>
+        </div>
+        <div class="feedback-grid" style="grid-template-rows: 1fr;">
+            <div class="sol-card" style="height: auto; padding: 40px;">
+                <span class="badge badge-sol" style="font-size: 16px; padding: 5px 15px;">STEP 01</span>
+                <h3 style="font-size: 24px; margin-top: 15px;">이번 주 진행 단계</h3>
+                <div class="text-content">
+                    프로젝트에 사용할 <span class="highlight-blue">데이터셋을 최종적으로 검토하고 확정</span>하는 단계를 수행하였습니다. 데이터의 품질과 구성을 갖추는 데 집중했습니다.
+                </div>
+            </div>
+            <div class="sol-card bg-green" style="height: auto; padding: 40px;">
+                <span class="badge badge-step" style="font-size: 16px; padding: 5px 15px;">STEP 02</span>
+                <h3 style="font-size: 24px; margin-top: 15px; color: #059669;">다음 주 진행 계획</h3>
+                <div class="text-content">
+                    확정된 데이터셋을 바탕으로 <span class="highlight-green">실제 모델을 구동</span>하여 성능을 확인합니다. 다양한 환경에서 테스트를 진행할 계획입니다.
+                </div>
+            </div>
+        </div>
+        <div class="footer-page">Slide 3 / 4</div>
+    </div>
+
+    <!-- Slide 4: [2안] 프로젝트 진행 단계 -->
+    <div class="slide">
+        <div class="slide-header" style="border-bottom-color: #374151;">
+            <h2><i class="fa-solid fa-magnifying-glass"></i> [2안] 프로젝트 진행 단계</h2>
+        </div>
+        <div class="feedback-grid" style="grid-template-rows: 1fr;">
+            <div class="sol-card bg-gray" style="height: auto; padding: 40px;">
+                <span class="badge" style="background: #e5e7eb; color: #374151; font-size: 16px; padding: 5px 15px;">STEP 01</span>
+                <h3 style="font-size: 24px; margin-top: 15px; color: #374151;">이번 주 진행 단계</h3>
+                <div class="text-content">
+                    <span style="font-weight: 700;">실현 가능성(Feasibility)</span> 측면에서 YOLO 모델의 성능을 확인 중입니다. <span style="font-weight: 700; text-decoration: underline;">1개의 물건으로 시험용 데이터셋을 구축</span>하여 객체 인식이 정상적으로 작동하는지 검증하고 있습니다.
+                </div>
+            </div>
+            <div class="sol-card bg-orange" style="height: auto; padding: 40px;">
+                <span class="badge" style="background: #ffedd5; color: #c2410c; font-size: 16px; padding: 5px 15px;">STEP 02</span>
+                <h3 style="font-size: 24px; margin-top: 15px; color: #c2410c;">다음 주 진행 계획</h3>
+                <div class="text-content">
+                    시험용 데이터셋 검증 완료 후, <span style="color: #c2410c; font-weight: 700; text-decoration: underline;">소규모 데이터셋을 활용한 본격적인 모델 학습</span>을 진행할 예정입니다. 이를 통해 모델의 기본 성능 지표를 확보하고자 합니다.
+                </div>
+            </div>
+        </div>
+        <div class="footer-page">Slide 4 / 4</div>
+    </div>
+
+</body>
+</html>
